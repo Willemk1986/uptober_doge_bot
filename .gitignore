@@ -1,0 +1,10 @@
+.env
+venv/
+__pycache__/
+*.pyc
+*.db
+homescreen.log*
+.connection_shown
+update_record.txt
+staging/
+backup_*

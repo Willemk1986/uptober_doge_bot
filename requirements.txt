@@ -1,0 +1,15 @@
+python-telegram-bot==20.7
+python-dotenv==1.0.0
+requests==2.31.0
+Pillow==10.0.0
+matplotlib==3.8.0
+tweepy==4.14.0
+cryptography==42.0.0
+qrcode[pil]==7.4.2
+sentry-sdk==1.40.0
+gitpython==3.1.40
+pytest==7.4.3
+langchain==0.1.0
+huggingface-hub==0.17.3          # ← FIXED VERSION
+transformers==4.34.0             # ← COMPATIBLE WITH HUB 0.17.3
+base58==2.1.1

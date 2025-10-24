@@ -1,0 +1,222 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Colors
+GOLD = '#FFD700'
+YELLOW = '#FFA500'
+BLACK = '#000000'
+BLUE = '#1E3A8A'
+
+# Endpoints
+COINGECKO = 'https://api.coingecko.com/api/v3'
+TWITTER_API = 'https://api.twitter.com/2'
+SOLANA_RPC = 'https://api.mainnet-beta.solana.com'
+
+# Contract Address
+CA = "AiChxGThnvFWGGGzA6rejb3nzPbm1eZKrq42BzWQpump"
+CA_LINK = "https://dexscreener.com/solana/aichxgthnvfwgggza6rejb3nzpbm1ezkrq42bzwqpump"
+
+# ALL LANGUAGES
+LANGUAGES = {
+    'en': {
+        'welcome_title': "Welcome to @UptoberDogeBot!",
+        'welcome_body': "Hey {user}, your UPDOGE adventure starts here! Dive into crypto pumps, Doge memes, and Uptober magic.",
+        'welcome_tip': "Uptober Tip: Doge loves the moon—tap Language to personalize!",
+        'language': "Language",
+        'about': "About UPDOGE",
+        'subscriptions': "Subscriptions",
+        'latest_tweets': "Latest Doge Tweets",
+        'fun_links': "Fun Links",
+        'create_image': "Create UPDOGE Image",
+        'let_me_updoge': "Let Me UPDOGE",
+        'home': "Home",
+        'profile_start': "Let’s set up your UPDOGE profile!",
+        'token_payment_prompt': "Scan QR to pay {amount} UPDOGE for {tier}!",
+        'ca_text': "📍 *Contract Address (CA):*\n`{ca}`\n[🔍 View on DexScreener]({link})",
+    },
+    'es': {
+        'welcome_title': "¡Bienvenido a @UptoberDogeBot!",
+        'welcome_body': "¡Hola {user}! Tu aventura UPDOGE empieza aquí. ¡Memes, pumps y magia Uptober!",
+        'welcome_tip': "Consejo Uptober: ¡A Doge le encanta la luna! Toca Idioma para personalizar.",
+        'language': "Idioma",
+        'about': "Acerca de UPDOGE",
+        'subscriptions': "Suscripciones",
+        'latest_tweets': "Últimos Tweets Doge",
+        'fun_links': "Enlaces Divertidos",
+        'create_image': "Crear Imagen UPDOGE",
+        'let_me_updoge': "Déjame UPDOGEAR",
+        'home': "Inicio",
+        'profile_start': "¡Vamos a configurar tu perfil UPDOGE!",
+        'token_payment_prompt': "Escanea QR para pagar {amount} UPDOGE por {tier}!",
+        'ca_text': "📍 *Dirección del Contrato (CA):*\n`{ca}`\n[🔍 Ver en DexScreener]({link})",
+    },
+    'zh': {
+        'welcome_title': "欢迎来到 @UptoberDogeBot！",
+        'welcome_body': "嘿 {user}，你的 UPDOGE 冒险从这里开始！加密货币泵、Doge 模因和 Uptober 魔法。",
+        'welcome_tip': "Uptober 小贴士：Doge 爱月球 — 点击语言个性化！",
+        'language': "语言",
+        'about': "关于 UPDOGE",
+        'subscriptions': "订阅",
+        'latest_tweets': "最新 Doge 推文",
+        'fun_links': "有趣链接",
+        'create_image': "创建 UPDOGE 图片",
+        'let_me_updoge': "让我 UPDOGE",
+        'home': "首页",
+        'profile_start': "让我们设置你的 UPDOGE 个人资料！",
+        'token_payment_prompt': "扫描二维码支付 {amount} UPDOGE 获取 {tier}！",
+        'ca_text': "📍 *合约地址 (CA):*\n`{ca}`\n[🔍 在 DexScreener 查看]({link})",
+    },
+    'hi': {
+        'welcome_title': "स्वागत है @UptoberDogeBot में!",
+        'welcome_body': "नमस्ते {user}, आपका UPDOGE साहसिक कार्य यहाँ शुरू होता है! क्रिप्टो पंप, Doge मीम्स और Uptober जादू।",
+        'welcome_tip': "Uptober टिप: Doge को चाँद पसंद है — भाषा टैप करें!",
+        'language': "भाषा",
+        'about': "UPDOGE के बारे में",
+        'subscriptions': "सदस्यता",
+        'latest_tweets': "नवीनतम Doge ट्वीट्स",
+        'fun_links': "मजेदार लिंक",
+        'create_image': "UPDOGE छवि बनाएं",
+        'let_me_updoge': "मुझे UPDOGE करने दो",
+        'home': "होम",
+        'profile_start': "आइए आपका UPDOGE प्रोफाइल सेट करें!",
+        'token_payment_prompt': "QR स्कैन करें और {amount} UPDOGE {tier} के लिए भेजें!",
+        'ca_text': "📍 *अनुबंध पता (CA):*\n`{ca}`\n[🔍 DexScreener पर देखें]({link})",
+    },
+    'ar': {
+        'welcome_title': "مرحباً بك في @UptoberDogeBot!",
+        'welcome_body': "مرحباً {user}، مغامرتك مع UPDOGE تبدأ هنا! غوص في ضخ العملات، ميمات Doge وسحر Uptober.",
+        'welcome_tip': "نصيحة Uptober: Doge يحب القمر — اضغط اللغة للتخصيص!",
+        'language': "اللغة",
+        'about': "عن UPDOGE",
+        'subscriptions': "الاشتراكات",
+        'latest_tweets': "أحدث تغريدات Doge",
+        'fun_links': "روابط ممتعة",
+        'create_image': "إنشاء صورة UPDOGE",
+        'let_me_updoge': "دعني أقوم بـ UPDOGE",
+        'home': "الرئيسية",
+        'profile_start': "لنقم بإعداد ملفك الشخصي في UPDOGE!",
+        'token_payment_prompt': "امسح رمز QR لدفع {amount} UPDOGE لـ {tier}!",
+        'ca_text': "📍 *عنوان العقد (CA):*\n`{ca}`\n[🔍 عرض على DexScreener]({link})",
+    },
+    'pt': {
+        'welcome_title': "Bem-vindo ao @UptoberDogeBot!",
+        'welcome_body': "Oi {user}, sua aventura UPDOGE começa aqui! Mergulhe em pumps de cripto, memes Doge e magia Uptober.",
+        'welcome_tip': "Dica Uptober: Doge ama a lua — toque em Idioma para personalizar!",
+        'language': "Idioma",
+        'about': "Sobre UPDOGE",
+        'subscriptions': "Assinaturas",
+        'latest_tweets': "Últimos Tweets Doge",
+        'fun_links': "Links Divertidos",
+        'create_image': "Criar Imagem UPDOGE",
+        'let_me_updoge': "Deixe-me UPDOGEAR",
+        'home': "Início",
+        'profile_start': "Vamos configurar seu perfil UPDOGE!",
+        'token_payment_prompt': "Escaneie o QR para pagar {amount} UPDOGE por {tier}!",
+        'ca_text': "📍 *Endereço do Contrato (CA):*\n`{ca}`\n[🔍 Ver no DexScreener]({link})",
+    },
+    'ru': {
+        'welcome_title': "Добро пожаловать в @UptoberDogeBot!",
+        'welcome_body': "Привет {user}, твое приключение с UPDOGE начинается здесь! Погрузись в пампы крипты, мемы Doge и магию Uptober.",
+        'welcome_tip': "Совет Uptober: Doge любит луну — нажми Язык для персонализации!",
+        'language': "Язык",
+        'about': "О UPDOGE",
+        'subscriptions': "Подписки",
+        'latest_tweets': "Последние твиты Doge",
+        'fun_links': "Весёлые ссылки",
+        'create_image': "Создать изображение UPDOGE",
+        'let_me_updoge': "Позволь мне UPDOGE",
+        'home': "Главная",
+        'profile_start': "Давай настроим твой профиль UPDOGE!",
+        'token_payment_prompt': "Отсканируй QR для оплаты {amount} UPDOGE за {tier}!",
+        'ca_text': "📍 *Адрес контракта (CA):*\n`{ca}`\n[🔍 Просмотр на DexScreener]({link})",
+    },
+    'ja': {
+        'welcome_title': "@UptoberDogeBot へようこそ！",
+        'welcome_body': "やあ {user}、UPDOGE の冒険はここから始まる！暗号通貨のパンプ、Doge ミーム、Uptober の魔法に飛び込もう。",
+        'welcome_tip': "Uptober ヒント：Doge は月が大好き — 言語をタップしてカスタマイズ！",
+        'language': "言語",
+        'about': "UPDOGE について",
+        'subscriptions': "サブスクリプション",
+        'latest_tweets': "最新 Doge ツイート",
+        'fun_links': "楽しいリンク",
+        'create_image': "UPDOGE 画像を作成",
+        'let_me_updoge': "UPDOGE させて",
+        'home': "ホーム",
+        'profile_start': "UPDOGE プロフィールを設定しましょう！",
+        'token_payment_prompt': "QR をスキャンして {amount} UPDOGE を {tier} に支払う！",
+        'ca_text': "📍 *コントラクトアドレス (CA):*\n`{ca}`\n[🔍 DexScreener で見る]({link})",
+    },
+    'de': {
+        'welcome_title': "Willkommen bei @UptoberDogeBot!",
+        'welcome_body': "Hey {user}, dein UPDOGE-Abenteuer beginnt hier! Tauche ein in Krypto-Pumps, Doge-Memes und Uptober-Magie.",
+        'welcome_tip': "Uptober-Tipp: Doge liebt den Mond — tippe Sprache zum Personalisieren!",
+        'language': "Sprache",
+        'about': "Über UPDOGE",
+        'subscriptions': "Abonnements",
+        'latest_tweets': "Neueste Doge-Tweets",
+        'fun_links': "Spaßige Links",
+        'create_image': "UPDOGE-Bild erstellen",
+        'let_me_updoge': "Lass mich UPDOGE",
+        'home': "Startseite",
+        'profile_start': "Lass uns dein UPDOGE-Profil einrichten!",
+        'token_payment_prompt': "Scanne den QR-Code, um {amount} UPDOGE für {tier} zu zahlen!",
+        'ca_text': "📍 *Vertragsadresse (CA):*\n`{ca}`\n[🔍 Auf DexScreener ansehen]({link})",
+    },
+    'fr': {
+        'welcome_title': "Bienvenue sur @UptoberDogeBot !",
+        'welcome_body': "Salut {user}, ton aventure UPDOGE commence ici ! Plonge dans les pumps crypto, les mèmes Doge et la magie Uptober.",
+        'welcome_tip': "Astuce Uptober : Doge adore la lune — appuie sur Langue pour personnaliser !",
+        'language': "Langue",
+        'about': "À propos d'UPDOGE",
+        'subscriptions': "Abonnements",
+        'latest_tweets': "Derniers tweets Doge",
+        'fun_links': "Liens amusants",
+        'create_image': "Créer une image UPDOGE",
+        'let_me_updoge': "Laisse-moi UPDOGE",
+        'home': "Accueil",
+        'profile_start': "Configurons ton profil UPDOGE !",
+        'token_payment_prompt': "Scanne le QR pour payer {amount} UPDOGE pour {tier} !",
+        'ca_text': "📍 *Adresse du contrat (CA) :*\n`{ca}`\n[🔍 Voir sur DexScreener]({link})",
+    },
+    'it': {
+        'welcome_title': "Benvenuto su @UptoberDogeBot!",
+        'welcome_body': "Ciao {user}, la tua avventura UPDOGE inizia qui! Tuffati nei pump crypto, meme Doge e magia Uptober.",
+        'welcome_tip': "Consiglio Uptober: Doge ama la luna — tocca Lingua per personalizzare!",
+        'language': "Lingua",
+        'about': "Informazioni su UPDOGE",
+        'subscriptions': "Abbonamenti",
+        'latest_tweets': "Ultimi tweet Doge",
+        'fun_links': "Link divertenti",
+        'create_image': "Crea immagine UPDOGE",
+        'let_me_updoge': "Fammi UPDOGE",
+        'home': "Home",
+        'profile_start': "Configuriamo il tuo profilo UPDOGE!",
+        'token_payment_prompt': "Scansiona il QR per pagare {amount} UPDOGE per {tier}!",
+        'ca_text': "📍 *Indirizzo del contratto (CA):*\n`{ca}`\n[🔍 Visualizza su DexScreener]({link})",
+    },
+    'ko': {
+        'welcome_title': "@UptoberDogeBot에 오신 것을 환영합니다!",
+        'welcome_body': "안녕하세요 {user}, UPDOGE 모험이 여기서 시작됩니다! 암호화폐 펌프, Doge 밈, Uptober 마법에 빠져보세요.",
+        'welcome_tip': "Uptober 팁: Doge는 달을 사랑합니다 — 언어를 탭하여 개인화하세요!",
+        'language': "언어",
+        'about': "UPDOGE 정보",
+        'subscriptions': "구독",
+        'latest_tweets': "최신 Doge 트윗",
+        'fun_links': "재미있는 링크",
+        'create_image': "UPDOGE 이미지 생성",
+        'let_me_updoge': "UPDOGE 해줘",
+        'home': "홈",
+        'profile_start': "UPDOGE 프로필을 설정해 봅시다!",
+        'token_payment_prompt': "QR을 스캔하여 {amount} UPDOGE를 {tier}에 지불하세요!",
+        'ca_text': "📍 *계약 주소 (CA):*\n`{ca}`\n[🔍 DexScreener에서 보기]({link})",
+    }
+}
+
+def get_text(user_data: dict, key: str, **kwargs) -> str:
+    lang = user_data.get('language', 'en')
+    text = LANGUAGES.get(lang, LANGUAGES['en']).get(key, key)
+    if key == 'ca_text':
+        return text.format(ca=CA, link=CA_LINK)
+    return text.format(**kwargs) if kwargs else text
